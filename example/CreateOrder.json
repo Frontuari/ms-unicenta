@@ -1,0 +1,69 @@
+
+{
+    "orgId": 1000001,
+    "documentNo": "5000",
+    "description": "SAPOSUCIO",
+    "c_DocTypeTarget_ID":	1000170,
+    "dateOrdered": "2022-05-10",
+    "dateAcct": "2022-05-10",
+    "salesRep_ID": 1000089,
+    "c_PaymentTerm_ID": 1000000,
+    "m_PriceList_ID": 1000032,
+    "c_Currency_ID": 1000001,
+    "c_ConversionType_ID": 1000000,
+    "m_Warehouse_ID": 1000029,
+    "paymentRule": "M",
+    "ftu_FiscalDocumentNo": "1256",
+    "ftu_FiscalPrinterSerial": "MHZ577848",
+    "isTransferred": true,
+    "completeIt": true,
+    "partnerinfo": [{
+                       "value": "14749382",
+                       "name": "Orlando",
+                       "taxID": "14749382",
+                       "isCustomer": true,
+                       "cbpgroup": 1000041,
+                       "taxidtype": 1000001
+                    }],
+    "partnerlocation": [{
+                        "c_Location_ID": 0,
+                        "name": "Barquisimeto",
+                        "phone": "04145282565",
+                        "isBillTo": true,
+                        "isPayFrom": true,
+                        "isRemitTo": true,
+                        "isShipTo": true
+    }],
+    "lines": [{
+                        "clientId": 1000000,
+                        "orgId": 1000001,
+                        "description": "test",
+                        "m_product_id": 1007017,
+                        "qtyOrdered": 1.0,
+                        "priceActual": 4.77,
+                        "priceEntered": 4.77,
+                        "c_uom_id": 1000010,
+                        "c_tax_id":1000034,
+                        "qtyEntered": 1.0,
+                        "priceList": 4.77,
+                        "discount": 0
+    }],
+    "ppayment": [{
+                        "aD_Org_ID": 1000001,
+                        "c_POSTenderType_ID": 1000006,
+                        "payAmt": 4.77,                       
+                        "tenderType": "A",
+                        "depositGroup": "PRUEBA BALURDA",
+                        "help": "Pago Movil",
+                        "accountNo": null,
+                        "a_Name": null,
+                        "creditCardNumber": null,
+                        "creditCardType": null,
+                        "datePromised": "2022-05-10",
+                        "micr": "test",
+                        "swiftCode": "39393939",
+                        "routingNo": "39393993",
+                        "voiceAuthCode": "0393"
+
+    }]
+}
