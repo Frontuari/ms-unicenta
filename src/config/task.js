@@ -5,9 +5,9 @@ const periodicity = {
   atTwoAm: "0 0 2 * * *",
   everyTwelve: "0 0 12 * * *",
   everyThirtyMinutes: "30/5 * * * *",
-  everyFiveSeconds: "*/35 * * * * *",
+  everyFiveSeconds: "*/5 * * * * *",
 };
 
 exports.getPeriodicity = () => {
-  return periodicity.everyFiveSeconds;
+  return periodicity.onePerHour;
 };

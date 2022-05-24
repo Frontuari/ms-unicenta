@@ -36,5 +36,8 @@ exports.getNewOrderLines = async (ticket) => {
 };
 
 exports.uncheckAllOrdersExistError = async () => {
-  return await db.tickets.update({ exist_error: "N" }, { exist_error: "Y" });
+  return await db.tickets.update(
+    { exist_error: "N" },
+    { where: { exist_error: "Y" } }
+  );
 };

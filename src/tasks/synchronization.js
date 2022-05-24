@@ -1,6 +1,6 @@
 const cron = require("node-cron");
 
-const idempiereSyncOrderServices = require("../services/idempiereSyncOrderServices");
+const idempiereSyncOrderServices = require("../services/idempiere/syncOrderServices");
 const periodicity = require("../config/task");
 
 exports.executeTask = () => {

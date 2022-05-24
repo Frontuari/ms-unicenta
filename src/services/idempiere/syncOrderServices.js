@@ -20,9 +20,13 @@ exports.run = async () => {
     const countTicekts = tickets.length;
 
     if (countTicekts < 1) {
+      console.log("\n");
+      console.log("\n");
+
       logs.sync("No existen ordenes por sincronizar ");
-      console.log("Dormir 30sg");
-      execSync("sleep 30");
+
+      console.log("\n");
+      console.log("\n");
     } else {
       logs.sync(`Tickets por Sincronizar: ${countTicekts} `);
     }
