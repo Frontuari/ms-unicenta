@@ -1,7 +1,7 @@
 const idempiereService = require("./apiService");
 const logs = require("../../utils/logs");
 const sleep = require("../../utils/sleep");
-const paymentService = require("../paymentServices");
+const paymentService = require("../paymentService");
 
 exports.run = async () => {
   try {

@@ -1,9 +1,8 @@
 const axios = require("axios");
 const idempiereEnv = require("../../config/idempiereEnv");
 const logs = require("../../utils/logs");
-const { execSync } = require("child_process");
-const OrderService = require("../../services/OrderService");
-const PaymentService = require("../../services/paymentServices");
+const OrderService = require("../OrderService");
+const PaymentService = require("../paymentService");
 const date = require("../../utils/date");
 
 exports.run = async () => {

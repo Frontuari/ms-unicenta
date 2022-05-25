@@ -3,9 +3,9 @@ const express = require("express");
 const cors = require("cors");
 const routes = require("./routes");
 const globalConfig = require("./config/global");
-const task = require("./tasks/synchronization");
-const taskUnCheckAllOrder = require("./tasks/uncheckAllOrders");
-const syncOrderServices = require("./services/idempiere/syncOrderServices");
+const syncTask = require("./tasks/idempiere/syncTask");
+const taskUnCheckAllOrder = require("./tasks/uncheckAllOrdersTask");
+const syncOrderServices = require("./services/idempiere/syncOrderService");
 const syncPosPaymentService = require("./services/idempiere/syncPosPaymentService");
 const app = express();
 
@@ -22,7 +22,7 @@ app.use("/api/", routes());
   }
 })();
 
-task.executeTask();
+syncTask.executeTaskSyncOrders();
 taskUnCheckAllOrder.executeTask();
 
 app.listen(globalConfig.port, () =>
