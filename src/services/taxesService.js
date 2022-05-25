@@ -1,6 +1,6 @@
 db = require("../models");
 
-exports.upsertCategorie = async (id, name) => {
+exports.upsertCategories = async (id, name) => {
   return await db.taxcategory.upsert({
     id,
     name,

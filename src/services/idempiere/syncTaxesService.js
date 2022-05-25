@@ -8,7 +8,7 @@ exports.run = async () => {
 
     taxes.forEach(async (data) => {
       try {
-        await taxesService.upsertCategoriep(
+        await taxesService.upsertCategories(
           data.taxCategoryId,
           data.taxCategoryName
         );
@@ -24,17 +24,27 @@ exports.run = async () => {
           logs: e.message,
           process: "Actualizar impuestos",
         });
+
+        console.log(e);
       }
     });
 
     logs.sync("Se actualizaron los maestros de impuestos", {
       process: "Actualizar impuestos",
     });
+    return {
+      message: "Se actualizaron los maestros de impuestos",
+      data: taxes,
+    };
   } catch (err) {
     logs.sync("Error al cargar los impuestos", {
       type: "error",
       logs: err.message,
       process: "Actualizar impuestos",
     });
+
+    return {
+      message: "Error al cargar los impuestos",
+    };
   }
 };

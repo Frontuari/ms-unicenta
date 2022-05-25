@@ -4,7 +4,7 @@ const axios = require("axios");
 exports.getAllTaxes = async () => {
   try {
     const url = `${idempiereConfig.API_URL}/taxes`;
-    const response = await axios.get(url, headerAxios);
+    const response = await axios.get(url);
 
     return response.data;
   } catch (error) {

@@ -8,5 +8,4 @@ exports.uncheckAllOrdersExistError = async (req, res) => {
   } catch (error) {
     return res.status(404).json({ ok: false, error: error.message });
   }
-  ``;
 };
