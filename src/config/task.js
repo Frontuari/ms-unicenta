@@ -9,5 +9,8 @@ const periodicity = {
 };
 
 exports.getPeriodicity = () => {
+  return periodicity.onePerMinute;
+};
+exports.getPeriodicityUnCheckAllOrders = () => {
   return periodicity.onePerHour;
 };

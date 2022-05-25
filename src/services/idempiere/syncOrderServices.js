@@ -20,20 +20,14 @@ exports.run = async () => {
     const countTicekts = tickets.length;
 
     if (countTicekts < 1) {
-      console.log("\n");
-      console.log("\n");
-
-      logs.sync("No existen ordenes por sincronizar ");
-
-      console.log("\n");
-      console.log("\n");
+      logs.sync("No existen ordenes por sincronizar ", { type: "warn" });
     } else {
       logs.sync(`Tickets por Sincronizar: ${countTicekts} `);
     }
 
     for (let ticket of tickets) {
       logs.sync(`ticket a sincronizar : ${ticket.ticketid}`, {
-        //       ticket: ticket.id,
+        ticket_id: ticket.id,
       });
 
       try {
@@ -55,16 +49,13 @@ exports.run = async () => {
             .catch(() => {
               console.log("error al guardar");
             });
-          console.log("\n");
-          console.log("\n");
+
           console.log(` ticket ${ticket.ticketid} sincronizado ...`);
           logs.sync(response.data, {
             process: "venta sincronizada",
             deactive_messages: true,
             ticket_id: ticket.id,
           });
-          console.log("\n");
-          console.log("\n");
         } else {
           ticket.exist_error = "Y";
 
@@ -75,22 +66,21 @@ exports.run = async () => {
               console.log("### ERROR ###");
             });
 
-          console.log("\n");
-          console.log("\n");
-
           logs.sync(response.data.errMsg, {
             type: "error",
             process: "sincronizar ventas",
             ticket_id: ticket.id,
-            //logs: response.data,
+            logs: response.data,
           });
 
-          console.log(
-            `Respuesta de Error desde idempiere.... ticket: ${ticket.ticketid}`
+          logs.sync(
+            `Respuesta de Error desde idempiere.... ticket: ${ticket.ticketid}`,
+            {
+              type: "error",
+              process: "sincronizar ventas",
+              ticket_id: ticket.id,
+            }
           );
-
-          console.log("\n");
-          console.log("\n");
         }
       } catch (error) {
         console.log(error);
@@ -106,15 +96,11 @@ exports.run = async () => {
 
         console.log("Error al sincronizar....");
 
-        console.log("\n");
-
         logs.sync(error.message, {
           type: "error",
           process: "sincronizar ventas",
-          // logs: error,
+          logs: error,
         });
-        console.log("\n");
-        console.log("\n");
       }
     }
 
@@ -126,7 +112,7 @@ exports.run = async () => {
     logs.sync(error.message, {
       type: "error",
       process: "sincronizar ventas",
-      // logs: error,
+      logs: error,
     });
 
     ticket.set({

@@ -4,8 +4,9 @@ const cors = require("cors");
 const routes = require("./routes");
 const globalConfig = require("./config/global");
 const task = require("./tasks/synchronization");
-const idempiereSyncOrderServices = require("./services/idempiere/syncOrderServices");
-const idempiereSyncPosPaymentService = require("./services/idempiere/syncPosPaymentService");
+const taskUnCheckAllOrder = require("./tasks/uncheckAllOrders");
+const syncOrderServices = require("./services/idempiere/syncOrderServices");
+const syncPosPaymentService = require("./services/idempiere/syncPosPaymentService");
 const app = express();
 
 app.use(express.json());
@@ -14,26 +15,15 @@ app.use("/api/", routes());
 
 (async () => {
   try {
-    if (globalConfig.SYNC_IDEMPIERE) await idempiereSyncPosPaymentService.run();
-    if (globalConfig.SYNC_IDEMPIERE) await idempiereSyncOrderServices.run();
+    if (globalConfig.SYNC_IDEMPIERE) await syncPosPaymentService.run();
+    if (globalConfig.SYNC_IDEMPIERE) await syncOrderServices.run();
   } catch (error) {
     console.log(error);
   }
-
-  /*while (true) {
-    console.log("before start");
-    try {
-      //  if (globalConfig.SYNC_IDEMPIERE) await idempiereSyncOrderServices.run();
-      // execSync(`sleep 30`);
-      //
-    } catch (error) {
-      console.log(error);
-    }
-    console.log("after start");
-  }*/
 })();
 
 task.executeTask();
+taskUnCheckAllOrder.executeTask();
 
 app.listen(globalConfig.port, () =>
   console.log("Server is up on port: ", globalConfig.port)

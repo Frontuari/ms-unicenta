@@ -1,11 +1,14 @@
 const cron = require("node-cron");
 
-const idempiereSyncOrderServices = require("../services/idempiere/syncOrderServices");
+const syncOrderServices = require("../services/idempiere/syncOrderServices");
 const periodicity = require("../config/task");
 
 exports.executeTask = () => {
   cron.schedule(periodicity.getPeriodicity(), async () => {
-    console.log("Start executing task at: ", new Date().toDateString());
+    console.log(
+      "Ejecucion de la tarea de sincronizacion: ",
+      new Date().toDateString()
+    );
     try {
       await syncOrderServices.run();
     } catch (error) {
