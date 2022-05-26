@@ -8,6 +8,8 @@ module.exports = () => {
     OrderController.uncheckAllOrdersExistError
   );
 
-  router.get("/sync/taxes", syncController.syncTaxes);
+  router.get("/idempiere/sync/taxes", syncController.syncTaxes);
+  router.get("/idempiere/sync/payments", syncController.syncTypePayments);
+  router.get("/idempiere/sync/uoms", syncController.syncUoms);
   return router;
 };

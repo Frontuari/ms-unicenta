@@ -13,10 +13,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     { timestamps: false, tableName: "uom", freezeTableName: true }
   );
-  //TicketLines.removeAttribute("id");
-  /* TicketLines.associate = (models) => {
-        TicketLines.belongsTo(models.carrito);
-    };*/
 
   return UOM;
 };

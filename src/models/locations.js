@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
   const People = sequelize.define(
-    "people",
+    "locations",
     {
       id: {
         type: DataTypes.STRING,
@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
       },
     },
-    { timestamps: false, tableName: "people", freezeTableName: true }
+    { timestamps: false, tableName: "locations", freezeTableName: true }
   );
 
   return People;

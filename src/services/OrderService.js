@@ -15,6 +15,25 @@ exports.getNewOrders = async () => {
   });
 };
 
+exports.getTicket = async (id) => {
+  return await db.tickets.findOne({
+    where: {
+      ticketid: id,
+      tickettype: "0",
+    },
+  });
+};
+
+exports.getTicketWithDetail = async (id) => {
+  return await db.tickets.findOne({
+    where: {
+      ticketid: id,
+      tickettype: "0",
+    },
+    include: { all: true },
+  });
+};
+
 exports.getNewReturnsOrders = async () => {
   return await db.tickets.findAll({
     where: {
@@ -22,7 +41,8 @@ exports.getNewReturnsOrders = async () => {
       exist_error: "N",
       tickettype: "1",
     },
-    limit: idempiereEnv.RECORD_LIMIT,
+    include: { all: true },
+    order: [["ticketid", "ASC"]],
   });
 };
 

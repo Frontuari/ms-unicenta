@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DOUBLE,
       },
     },
-    { timestamps: false, tableName: "Taxes", freezeTableName: true }
+    { timestamps: false, tableName: "taxes", freezeTableName: true }
   );
 
   return Taxes;
