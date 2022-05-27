@@ -3,18 +3,23 @@ const logs = require("../../utils/logs");
 const OrderService = require("../OrderService");
 const date = require("../../utils/date");
 const idempiereService = require("./apiService");
+const taskService = require("../../services/taskService");
 
 exports.run = async () => {
   const process = "sincronizar devoluciones  de ventas";
   try {
     logs.sync("# Inicio de Sincronizacion en 5sg ", { deative_db: true });
 
+    await taskService.activeProcess(2);
+
     const tickets = await OrderService.getNewReturnsOrders();
 
     const countTicekts = tickets.length;
 
     if (countTicekts < 1) {
-      logs.sync("No existen ordenes por sincronizar ", { type: "warn" });
+      logs.sync("No existen ordenes de devolucion por sincronizar ", {
+        type: "warn",
+      });
     } else {
       logs.sync(`Tickets devolucion por Sincronizar: ${countTicekts} `);
     }
@@ -31,8 +36,6 @@ exports.run = async () => {
         let dataJSON = createOrderJSON(ticket, ticketlines, ticketOriginal);
 
         const response = await idempiereService.getReturnOrder(dataJSON);
-        console.log("AQUI ENTRO");
-        console.log(response);
 
         if (response.errorMsg.toUpperCase() == "OK") {
           ticket.IsImported = "Y";
@@ -44,14 +47,20 @@ exports.run = async () => {
               console.log("error al guardar");
             });
 
-          console.log(
-            ` ticket de devolucion ${ticket.ticketid} sincronizado ...`
-          );
           logs.sync(response, {
             process,
             deactive_messages: true,
             ticket_id: ticket.id,
           });
+
+          logs.sync(
+            ` ticket de devolucion ${ticket.ticketid} sincronizado ...`,
+            {
+              process,
+              type: "success",
+              ticket_id: ticket.id,
+            }
+          );
         } else {
           ticket.exist_error = "Y";
 
@@ -70,7 +79,7 @@ exports.run = async () => {
           });
 
           logs.sync(
-            `Respuesta de Error desde idempiere.... ticket: ${ticket.ticketid}`,
+            `Respuesta de Error desde idempiere, ticket de devolucion: ${ticket.ticketid}`,
             {
               type: "error",
               process,
@@ -79,8 +88,6 @@ exports.run = async () => {
           );
         }
       } catch (error) {
-        console.log(error);
-
         ticket.exist_error = "Y";
 
         ticket
@@ -90,9 +97,13 @@ exports.run = async () => {
             console.log("### ERROR ###");
           });
 
-        console.log("Error al sincronizar devolucion....");
-
         logs.sync(error.message, {
+          type: "error",
+          process: "sincronizar devoluciones  de ventas",
+          logs: error,
+        });
+
+        logs.sync("Error al sincronizar devolucion....", {
           type: "error",
           process: "sincronizar devoluciones  de ventas",
           logs: error,
@@ -100,10 +111,31 @@ exports.run = async () => {
       }
     }
 
+    try {
+      await taskService.deactiveProcess(2);
+    } catch (ee) {
+      logs.sync(ee.message, {
+        type: "error",
+        process: "Liberar Job",
+        logs: error,
+      });
+    }
+
     return true;
   } catch (error) {
-    console.log(error);
-    //execSync("sleep 5");
+    try {
+      ticket.set({
+        exist_error: "Y",
+      });
+
+      await ticket.save();
+    } catch (e) {}
+
+    logs.sync("Error al sincronizar las devoluciones de ventas", {
+      type: "error",
+      process: "sincronizar devoluciones de ventas",
+      logs: error,
+    });
 
     logs.sync(error.message, {
       type: "error",
@@ -111,13 +143,15 @@ exports.run = async () => {
       logs: error,
     });
 
-    ticket.set({
-      exist_error: "Y",
-    });
-
-    await ticket.save();
-
-    //throw new Error(error.message);
+    try {
+      await taskService.deactiveProcess(2);
+    } catch (ee) {
+      logs.sync(ee.message, {
+        type: "error",
+        process: "Liberar Job",
+        logs: error,
+      });
+    }
   }
 };
 

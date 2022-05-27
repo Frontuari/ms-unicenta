@@ -31,7 +31,6 @@ exports.getTypePaymentByDescription = (payment) => {
 };
 
 exports.getPaymentsForTicket = async (ticket) => {
-  console.log(ticket);
   return await db.payments.findAll({
     where: {
       receipt: ticket,
@@ -53,7 +52,5 @@ exports.getTypePosPaymentByID = async (id, app) => {
 };
 
 exports.updateTypePosPayment = async (paymentType, data) => {
-  console.log(data);
-  console.log(paymentType);
   return await db.pos_payments.update(data, { where: { id: paymentType } });
 };

@@ -11,5 +11,6 @@ module.exports = () => {
   router.get("/idempiere/sync/taxes", syncController.syncTaxes);
   router.get("/idempiere/sync/payments", syncController.syncTypePayments);
   router.get("/idempiere/sync/uoms", syncController.syncUoms);
+  router.get("/idempiere/sync/users", syncController.syncPeople);
   return router;
 };

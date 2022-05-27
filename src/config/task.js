@@ -11,7 +11,7 @@ const periodicity = {
 };
 
 exports.getPeriodicity = () => {
-  return periodicity.onePerMinute;
+  return periodicity.everyFiveSeconds;
 };
 exports.getPeriodicityUnCheckAllOrders = () => {
   return periodicity.everyFiveMinutes;

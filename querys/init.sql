@@ -93,3 +93,13 @@ VALUES (
         '1',
         'idempiere'
     );
+CREATE TABLE ms_tasks (
+    id BIGINT auto_increment NOT NULL,
+    name varchar(255) NULL,
+    actived varchar(1) DEFAULT 'N' NOT NULL,
+    CONSTRAINT ms_tasks_PK PRIMARY KEY (id)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
+INSERT INTO ms_tasks (name, actived)
+VALUES('sync sale orders', 'Y');
+INSERT INTO ms_tasks (name, actived)
+VALUES('sync return sale orders', 'Y');

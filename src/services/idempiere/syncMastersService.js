@@ -15,9 +15,6 @@ exports.runPayments = async () => {
         data.a_Name.toUpperCase()
       );
 
-      console.log(type);
-      console.log(data.a_Name.toUpperCase());
-
       paymentService
         .updateTypePosPayment(type, {
           external_id: data.c_POSTenderType_ID,
@@ -131,7 +128,9 @@ exports.runUoms = async () => {
 
 exports.runPeople = async () => {
   try {
-    const peoples = await idempiereService.getEmployeesByOrg(idempiereEnv.org);
+    const peoples = await idempiereService.getEmployeesByOrg(
+      idempiereEnv.ORG_ID
+    );
     const process = "Actualizar Usuario";
     peoples.forEach(async (data) => {
       try {

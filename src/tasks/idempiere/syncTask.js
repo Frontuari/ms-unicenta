@@ -1,4 +1,5 @@
 const cron = require("node-cron");
+const taskService = require("../../services/taskService");
 const syncOrderServices = require("../../services/idempiere/syncOrderService");
 const syncReturnOrderService = require("../../services/idempiere/syncReturnOrderService");
 const syncMasters = require("../../services/idempiere/syncMastersService");
@@ -8,28 +9,56 @@ const logs = require("../../utils/logs");
 
 exports.executeTaskSyncOrders = () => {
   cron.schedule(periodicity.getPeriodicity(), async () => {
-    logs.sync(
-      `Ejecucion de la tarea de sincronizacion de tickets: ${new Date().toDateString()} `
-    );
     try {
-      await syncOrderServices.run();
+      const process = await taskService.getProcess(1);
+
+      logs.sync(`Job Invocado: ${new Date().toDateString()} `);
+
+      if (process.actived == "0") {
+        logs.sync(
+          `Ejecucion de la tarea de sincronizacion de tickets: ${new Date().toDateString()} `,
+          { type: "success", process: "job" }
+        );
+        await syncOrderServices.run();
+      } else {
+        logs.sync(
+          `La tarea de sincronizacion de tickets ya se esta ejecutando ${new Date().toDateString()} `,
+          { process: "job" }
+        );
+      }
     } catch (error) {
-      console.log(error);
-      throw new Error(error.message);
+      logs.sync(error.message, { type: "error", process: "job" });
+      logs.sync(`Error al ejecutar el Job  ${new Date().toDateString()}  `, {
+        type: "error",
+        process: "job",
+      });
     }
   });
 };
 
 exports.executeTaskSyncReturnOrders = () => {
   cron.schedule(periodicity.getPeriodicity(), async () => {
-    logs.sync(
-      `Ejecucion de la tarea de sincronizacion de tickets: ${new Date().toDateString()} `
-    );
     try {
-      await syncReturnOrderService.run();
+      const process = await taskService.getProcess(2);
+
+      if (process.actived == "0") {
+        logs.sync(
+          `Ejecucion de la tarea de sincronizacion de devolucion de tickets: ${new Date().toDateString()} `,
+          { type: "success", process: "job" }
+        );
+        await syncReturnOrderService.run();
+      } else {
+        logs.sync(
+          `La tarea de devolucion de tickets ya se esta ejecutando ${new Date().toDateString()} `,
+          { process: "job" }
+        );
+      }
     } catch (error) {
-      console.log(error);
-      throw new Error(error.message);
+      logs.sync(error.message, { type: "error", process: "job" });
+      logs.sync(`Error al ejecutar el Job  ${new Date().toDateString()}  `, {
+        type: "error",
+        process: "job",
+      });
     }
   });
 };

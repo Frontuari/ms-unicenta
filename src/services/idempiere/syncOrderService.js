@@ -4,10 +4,13 @@ const logs = require("../../utils/logs");
 const OrderService = require("../OrderService");
 const PaymentService = require("../paymentService");
 const date = require("../../utils/date");
+const taskService = require("../../services/taskService");
 
 exports.run = async () => {
   try {
     logs.sync("# Inicio de Sincronizacion en 5sg ", { deative_db: true });
+
+    await taskService.activeProcess(1);
 
     const url = `${idempiereEnv.API_URL}/orders`;
     const options = {
@@ -49,10 +52,15 @@ exports.run = async () => {
               console.log("error al guardar");
             });
 
-          console.log(` ticket ${ticket.ticketid} sincronizado ...`);
           logs.sync(response.data, {
             process: "venta sincronizada",
             deactive_messages: true,
+            ticket_id: ticket.id,
+          });
+
+          logs.sync(` ticket ${ticket.ticketid} sincronizado...`, {
+            type: "success",
+            process: "sincronizar ventas",
             ticket_id: ticket.id,
           });
         } else {
@@ -93,8 +101,6 @@ exports.run = async () => {
             console.log("### ERROR ###");
           });
 
-        console.log("Error al sincronizar....");
-
         logs.sync(error.message, {
           type: "error",
           process: "sincronizar ventas",
@@ -102,7 +108,15 @@ exports.run = async () => {
         });
       }
     }
-
+    try {
+      await taskService.deactiveProcess(1);
+    } catch (ee) {
+      logs.sync(ee.message, {
+        type: "error",
+        process: "Liberar Job",
+        logs: error,
+      });
+    }
     return true;
   } catch (error) {
     console.log(error);
@@ -119,6 +133,16 @@ exports.run = async () => {
     });
 
     await ticket.save();
+
+    try {
+      await taskService.deactiveProcess(1);
+    } catch (ee) {
+      logs.sync(ee.message, {
+        type: "error",
+        process: "Liberar Job",
+        logs: error,
+      });
+    }
 
     //throw new Error(error.message);
   }
@@ -198,11 +222,17 @@ const createOrderJSON = (ticket, ticketlines, payments) => {
     orgId: idempiereEnv.ORG_ID,
     documentNo: ticket.ticketid,
     description: idempiereEnv.COMMENT,
-
+    c_DocTypeTarget_ID: 1000170,
+    C_DocTypeOrder_ID: 1000170,
     dateOrdered: date(ticket.receipts.datenew),
     dateAcct: date(ticket.receipts.datenew),
     salesRep_ID: idempiereEnv.SALESREP_ID,
-
+    //c_PaymentTerm_ID: idempiereEnv.C_PAYMENTTERM_ID,
+    //m_PriceList_ID: idempiereEnv.M_PRICELIST_ID,
+    //c_Currency_ID: idempiereEnv.C_CURRENCY_ID,
+    //c_ConversionType_ID: idempiereEnv.C_CONVERSIONTYPE_ID,
+    //m_Warehouse_ID: idempiereEnv.M_WAREHOUSE_ID,
+    //paymentRule: idempiereEnv.PAYMENT_RULE,
     ftu_FiscalDocumentNo: ticket.fiscalprinterno,
     ftu_FiscalPrinterSerial: ticket.serialprinter,
     isTransferred: true,
