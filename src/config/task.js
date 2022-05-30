@@ -18,5 +18,5 @@ exports.getPeriodicityUnCheckAllOrders = () => {
 };
 
 exports.getPeriodicityMasters = () => {
-  return periodicity.everyTwentyMinutes;
+  return periodicity.atTwoAm;
 };

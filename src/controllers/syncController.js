@@ -39,3 +39,23 @@ exports.syncPeople = async (req, res) => {
     return res.status(404).json({ ok: false, error: error.message });
   }
 };
+
+exports.syncLocations = async (req, res) => {
+  try {
+    const response = await syncMaster.runLocations();
+
+    return res.status(200).json({ ok: true, result: response });
+  } catch (error) {
+    return res.status(404).json({ ok: false, error: error.message });
+  }
+};
+
+exports.syncProducts = async (req, res) => {
+  try {
+    const response = await syncMaster.runProducts();
+
+    return res.status(200).json({ ok: true, result: response });
+  } catch (error) {
+    return res.status(404).json({ ok: false, error: error.message });
+  }
+};

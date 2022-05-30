@@ -103,3 +103,5 @@ INSERT INTO ms_tasks (name, actived)
 VALUES('sync sale orders', 'Y');
 INSERT INTO ms_tasks (name, actived)
 VALUES('sync return sale orders', 'Y');
+ALTER TABLE currencyrates
+MODIFY COLUMN validto datetime DEFAULT NOW() NULL;

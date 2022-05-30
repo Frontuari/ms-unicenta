@@ -97,6 +97,18 @@ exports.getProductByOrg = async (org_id) => {
   }
 };
 
+exports.insertLogProduct = async (data) => {
+  try {
+    const url = `${idempiereConfig.API_URL}/products/createlog`;
+    const response = await axios.post(url, data);
+
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error(error.message);
+  }
+};
+
 exports.getReturnOrder = async (data) => {
   try {
     const url = `${idempiereConfig.API_URL}/RMA`;

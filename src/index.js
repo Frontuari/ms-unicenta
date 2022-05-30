@@ -23,11 +23,13 @@ app.use("/api/", routes());
     await taskService.deactiveProcess(2);
 
     if (globalConfig.SYNC_IDEMPIERE) {
-      await orderService.uncheckAllOrdersExistError();
+      // await orderService.uncheckAllOrdersExistError();
       await syncMasters.runPayments();
       await syncMasters.runTaxes();
       await syncMasters.runUoms();
       await syncMasters.runPeople();
+      await syncMasters.runLocations();
+
       await syncOrderServices.run();
       await syncReturnOrderService.run();
     }
