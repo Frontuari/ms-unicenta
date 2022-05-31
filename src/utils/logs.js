@@ -41,7 +41,7 @@ const initData = (data, message) => {
 };
 
 const saveLogInDB = (data) => {
-  db.logs
+  /*db.logs
     .create({
       process: data.process,
       status: data.type,
@@ -60,7 +60,7 @@ const saveLogInDB = (data) => {
         logs: transformToText(data.logs),
         ticket_id: data.ticket,
       });
-    });
+    });*/
 };
 
 const transformToText = (logs) => {

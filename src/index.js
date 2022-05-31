@@ -30,8 +30,8 @@ app.use("/api/", routes());
       await syncMasters.runPeople();
       await syncMasters.runLocations();
 
-      await syncOrderServices.run();
-      await syncReturnOrderService.run();
+      //await syncOrderServices.run();
+      //await syncReturnOrderService.run();
     }
   } catch (error) {
     console.log(error);
@@ -42,10 +42,10 @@ taskUnCheckAllOrder.executeTask();
 syncTask.executeTaskImportTaxes();
 syncTask.executeTaskImportTypePayments();
 syncTask.executeTaskImportUoms();
-syncTask.executeTaskSyncOrders();
+//syncTask.executeTaskSyncOrders();
 
 syncTask.executeTaskImportPeople();
-syncTask.executeTaskSyncReturnOrders();
+//syncTask.executeTaskSyncReturnOrders();
 
 app.listen(globalConfig.port, () =>
   console.log("Server is up on port: ", globalConfig.port)

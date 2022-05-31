@@ -202,7 +202,7 @@ exports.runLocations = async () => {
         });
       } catch (e) {
         console.log(e);
-        logs.sync("Error al cargar registro", {
+        logs.sync("Error al cargar registro de almacenes", {
           type: "error",
           logs: e.message,
           process,
@@ -211,18 +211,18 @@ exports.runLocations = async () => {
     });
 
     return {
-      message: "Se actualizo el registro",
+      message: "Se actualizo el registro de almacenes",
       data: locations,
     };
   } catch (err) {
-    logs.sync("Error al cargar los registros", {
+    logs.sync("Error al cargar los registros de almacenes", {
       type: "error",
       logs: err.message,
       process,
     });
 
     return {
-      message: "Error al cargar los registros",
+      message: "Error al cargar los registros de almacenes",
       error: true,
       logs: err.message,
     };
@@ -234,7 +234,7 @@ exports.runProducts = async () => {
     const products = await idempiereService.getProductByOrg(
       idempiereEnv.ORG_ID
     );
-    const process = "Actualizar Almacenes";
+    const process = "Actualizar Productos";
     let countProducts = 0;
 
     if (products) {
@@ -244,7 +244,7 @@ exports.runProducts = async () => {
         console.log(date(new Date(products[0].validTo)));
         await currencyratesService.create({
           indicatorname: "Tasa Idempiere",
-          currency_id: 1000001,
+          currency_id: 1000000,
           currencyto_id: 100,
           rate: products[0].currencyRate,
           validto: new Date(products[0].validTo),
@@ -322,7 +322,7 @@ exports.runProducts = async () => {
           }
         }
 
-        if (result) {
+        /*if (result) {
           try {
             await idempiereService.insertLogProduct(data);
 
@@ -331,7 +331,7 @@ exports.runProducts = async () => {
               process,
             });
 
-            logs.sync("Se cargo el log de registro en idempiere", {
+            logs.sync("Se cargo el log de productos en idempiere", {
               type: "success",
               process,
             });
@@ -341,16 +341,16 @@ exports.runProducts = async () => {
               logs: eee.message,
               process,
             });
-            logs.sync("Error al cargar el log de registro en idempiere", {
+            logs.sync("Error al cargar el log de productos en idempiere", {
               type: "error",
               logs: eee.message,
               process,
             });
           }
-        }
+        }*/
       } catch (e) {
         console.log(e);
-        logs.sync("Error al cargar registro", {
+        logs.sync("Error al cargar registro de productos", {
           type: "error",
           logs: e.message,
           process,
@@ -359,18 +359,18 @@ exports.runProducts = async () => {
     });
 
     return {
-      message: "Se actualizo el registro",
+      message: "Se actualizo el registro de productos",
       data: products,
     };
   } catch (err) {
-    logs.sync("Error al cargar los registros", {
+    logs.sync("Error al cargar/actualizar los registros de productos/tasas", {
       type: "error",
       logs: err.message,
       process,
     });
 
     return {
-      message: "Error al cargar los registros",
+      message: "Error al cargar/actualizar los registros de productos/tasas",
       error: true,
       logs: err.message,
     };

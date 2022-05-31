@@ -1,7 +1,7 @@
 const dbConfig = {
   username: "idempiere",
   password: "control1234**",
-  database: "unicenta_backup_10",
+  database: "unicenta_backup_9",
   host: "165.227.197.236",
   dialect: "mysql",
   dialectOptions: { connectTimeout: 99000 },

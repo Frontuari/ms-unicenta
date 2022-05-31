@@ -5,7 +5,7 @@ exports.upsertCategories = async (id, name) => {
 
   if (Categorie)
     return await db.categories.update(
-      { id, name, catshowname: "1" },
+      { name, catshowname: "1" },
       { where: { id } }
     );
   else
