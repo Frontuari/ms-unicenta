@@ -49,6 +49,18 @@ exports.getAllWarehouses = async () => {
   }
 };
 
+exports.getAllProductGroups = async () => {
+  try {
+    const url = `${idempiereConfig.API_URL}/products/groups`;
+    const response = await axios.get(url);
+
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error(error.message);
+  }
+};
+
 exports.getAllProducts = async () => {
   try {
     const url = `${idempiereConfig.API_URL}/products`;

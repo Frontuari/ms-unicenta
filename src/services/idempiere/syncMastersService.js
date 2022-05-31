@@ -229,6 +229,41 @@ exports.runLocations = async () => {
   }
 };
 
+exports.runProductGroups = async () => {
+  try{
+    const productgroups = await idempiereService.getAllProductGroups();
+    const process = "Actualizar Grupo de Productos";
+
+    logs.sync(`Total de Productos ${productgroups.length} `, {
+          process,
+        });
+    
+    productgroups.forEach( async (item) => {
+      await categorieService.upsertCategories(
+        item.groupId,
+        item.groupName
+      );
+    });
+
+    return {
+      message: "Se inserto/actualizo el registro de categorias de productos",
+      data: productgroups,
+    };
+  }catch (err) {
+    logs.sync("Error al cargar/actualizar los registros de los grupos de producto", {
+      type: "error",
+      logs: err.message,
+      process,
+    });
+
+    return {
+      message: "Error al cargar/actualizar los registros de los grupos de producto",
+      error: true,
+      logs: err.message,
+    };
+  }
+}
+
 exports.runProducts = async () => {
   try {
     const products = await idempiereService.getProductByOrg(
@@ -239,15 +274,12 @@ exports.runProducts = async () => {
 
     if (products) {
       try {
-        console.log(products[0].validTo);
-        console.log(new Date(products[0].validTo));
-        console.log(date(new Date(products[0].validTo)));
         await currencyratesService.create({
           indicatorname: "Tasa Idempiere",
           currency_id: 1000000,
           currencyto_id: 100,
           rate: products[0].currencyRate,
-          validto: new Date(products[0].validTo),
+          validto: products[0].validTo,
         });
 
         logs.sync("Se cargo la tasa", {
@@ -291,38 +323,32 @@ exports.runProducts = async () => {
         let result = false;
         let cat = false;
 
-        cat = await categorieService.upsertCategories(
-          data.groupId,
-          data.groupName
-        );
+        if (data.orgId == "-1") {
+          result = await productsService.create(dataJson);
+          logs.sync("Se creo el producto", {
+            process,
+            logs: dataJson,
+            type: "success",
+          });
 
-        if (cat) {
-          if (data.orgId == "-1") {
-            result = await productsService.create(dataJson);
-            logs.sync("Se creo el producto", {
+          data.orgId = idempiereEnv.ORG_ID;
+          await categorieService.upsertProductsCategories(data.productId);
+          countProducts++;
+        } else {
+          if (data.updateProduct) {
+            result = await productsService.update(dataJson);
+            await categorieService.upsertProductsCategories(data.productId);
+            logs.sync("Se actualizo el producto", {
+              type: "success",
               process,
               logs: dataJson,
-              type: "success",
             });
-
-            data.orgId = idempiereEnv.ORG_ID;
-            await categorieService.upsertProductsCategories(data.productId);
             countProducts++;
-          } else {
-            if (data.updateProduct) {
-              result = await productsService.update(dataJson);
-              await categorieService.upsertProductsCategories(data.productId);
-              logs.sync("Se actualizo el producto", {
-                type: "success",
-                process,
-                logs: dataJson,
-              });
-              countProducts++;
-            }
           }
         }
 
-        /*if (result) {
+        /***  Create Log ***/
+        if (result) {
           try {
             await idempiereService.insertLogProduct(data);
 
@@ -347,7 +373,8 @@ exports.runProducts = async () => {
               process,
             });
           }
-        }*/
+        }
+        /***  End Create Log ***/
       } catch (e) {
         console.log(e);
         logs.sync("Error al cargar registro de productos", {

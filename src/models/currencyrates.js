@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DOUBLE,
       },
       validto: {
-        type: DataTypes.DOUBLE,
+        type: DataTypes.STRING,
       },
     },
     { timestamps: false, tableName: "currencyrates", freezeTableName: true }

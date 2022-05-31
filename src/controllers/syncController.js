@@ -52,6 +52,7 @@ exports.syncLocations = async (req, res) => {
 
 exports.syncProducts = async (req, res) => {
   try {
+    await syncMaster.runProductGroups();
     const response = await syncMaster.runProducts();
 
     return res.status(200).json({ ok: true, result: response });
