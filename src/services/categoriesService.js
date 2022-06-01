@@ -1,7 +1,5 @@
 const db = require("../models");
 
-db = require("../models");
-
 exports.upsertCategories = async (id, name) => {
   const Categorie = await db.categories.findOne({ where: { id: id } });
   if (Categorie)
