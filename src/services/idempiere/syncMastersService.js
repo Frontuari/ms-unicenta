@@ -230,39 +230,40 @@ exports.runLocations = async () => {
 };
 
 exports.runProductGroups = async () => {
-  try{
+  try {
     const productgroups = await idempiereService.getAllProductGroups();
     const process = "Actualizar Grupo de Productos";
 
     logs.sync(`Total de Productos ${productgroups.length} `, {
-          process,
-        });
-    
-    productgroups.forEach( async (item) => {
-      await categorieService.upsertCategories(
-        item.groupId,
-        item.groupName
-      );
+      process,
+    });
+
+    productgroups.forEach(async (item) => {
+      await categorieService.upsertCategories(item.groupId, item.groupName);
     });
 
     return {
       message: "Se inserto/actualizo el registro de categorias de productos",
       data: productgroups,
     };
-  }catch (err) {
-    logs.sync("Error al cargar/actualizar los registros de los grupos de producto", {
-      type: "error",
-      logs: err.message,
-      process,
-    });
+  } catch (err) {
+    logs.sync(
+      "Error al cargar/actualizar los registros de los grupos de producto",
+      {
+        type: "error",
+        logs: err.message,
+        process,
+      }
+    );
 
     return {
-      message: "Error al cargar/actualizar los registros de los grupos de producto",
+      message:
+        "Error al cargar/actualizar los registros de los grupos de producto",
       error: true,
       logs: err.message,
     };
   }
-}
+};
 
 exports.runProducts = async () => {
   try {

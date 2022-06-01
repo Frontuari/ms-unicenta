@@ -1,3 +1,5 @@
+const db = require("../models");
+
 db = require("../models");
 
 exports.upsertCategories = async (id, name) => {
@@ -16,16 +18,7 @@ exports.upsertCategories = async (id, name) => {
 };
 
 exports.upsertProductsCategories = async (product) => {
-  const ProductsCat = await db.products_cat.findOne({ where: { product: product } });
-
-  if (ProductsCat)
-    return await db.products_cat.update(
-      { product, catorder: "1" },
-      { where: { product: product } }
-    );
-  else
-    return await db.products_cat.create({
-      product,
-      catorder: "1",
-    });
+  return await db.sequelize.query(
+    `INSERT IGNORE INTO products_cat  values ( '${product}' , '1' )  `
+  );
 };
