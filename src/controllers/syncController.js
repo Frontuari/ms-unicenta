@@ -51,12 +51,17 @@ exports.syncLocations = async (req, res) => {
 };
 
 exports.syncProducts = async (req, res) => {
-  try {
-    await syncMaster.runProductGroups();
-    const response = await syncMaster.runProducts();
 
-    return res.status(200).json({ ok: true, result: response });
-  } catch (error) {
-    return res.status(404).json({ ok: false, error: error.message });
-  }
+    syncMaster.runProductGroups().then(rsp => {
+      try {
+      const response = await syncMaster.runProducts();
+      return res.status(200).json({ ok: true, result: response });
+      } catch (error) {
+        log.sync(error.message , { type: 'error' } )
+      }
+    }).catch(error => {
+      return res.status(404).json({ ok: false, error: error.message });
+    })
+    
+
 };
