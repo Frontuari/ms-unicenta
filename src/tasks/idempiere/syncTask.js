@@ -105,6 +105,20 @@ exports.executeTaskImportUoms = () => {
   });
 };
 
+exports.executeTaskImportProductCats = () => {
+  cron.schedule(periodicity.getPeriodicityMasters(), async () => {
+    logs.sync(
+      `Ejecucion de la tarea de actualizacion de productos sincronizados: ${new Date().toDateString()} `
+    );
+    try {
+      await syncMasters.runProductCats();
+    } catch (error) {
+      console.log(error);
+      throw new Error(error.message);
+    }
+  });
+};
+
 exports.executeTaskImportPeople = () => {
   cron.schedule(periodicity.getPeriodicityMasters(), async () => {
     logs.sync(

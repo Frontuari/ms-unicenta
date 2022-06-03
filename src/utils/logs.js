@@ -8,7 +8,7 @@ exports.sync = (message, data) => {
   if (data.type != "info") {
     saveLogInDB(data);
   }
-
+  
   executeMessage(data, message);
 };
 
@@ -16,7 +16,7 @@ const executeMessage = (data, message) => {
   console.log("\n");
   if (data.type == "error") {
     logSync.error(message);
-    console.log(message.red);
+    console.log((message+" Exception : "+data.logs).red);
   } else if (data.type == "warn") {
     logSync.warn(message);
     console.log(message.yellow);

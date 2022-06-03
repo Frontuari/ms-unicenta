@@ -20,3 +20,9 @@ exports.upsertProductsCategories = async (product) => {
     `INSERT IGNORE INTO products_cat  values ( '${product}' , '1' )  `
   );
 };
+
+exports.recordProductCat = async () => {
+  return await db.sequelize.query(
+    `INSERT INTO products_cat SELECT id AS product, '1' as catorder FROM products WHERE NOT EXISTS (SELECT 1 FROM products_cat WHERE products.id = products_cat.product)`
+  );
+};

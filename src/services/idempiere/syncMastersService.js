@@ -275,13 +275,7 @@ exports.runProducts = async () => {
 
     if (products) {
       try {
-        await currencyratesService.create({
-          indicatorname: "Tasa Idempiere",
-          currency_id: 1000000,
-          currencyto_id: 100,
-          rate: products[0].currencyRate,
-          validto: products[0].validTo,
-        });
+        await currencyratesService.upsertRate(products[0].currencyRate,products[0].validTo);
 
         logs.sync("Se cargo la tasa", {
           type: "success",
@@ -307,7 +301,7 @@ exports.runProducts = async () => {
       try {
         let dataJson = {
           id: data.productId,
-          reference: data.productId,
+          reference: data.productValue,
           code: data.upc,
           codetype: data.codeType,
           name: data.productName,
@@ -333,12 +327,12 @@ exports.runProducts = async () => {
           });
 
           data.orgId = idempiereEnv.ORG_ID;
-          await categorieService.upsertProductsCategories(data.productId);
+          /**await categorieService.upsertProductsCategories(data.productId);**/
           countProducts++;
         } else {
           if (data.updateProduct) {
             result = await productsService.update(dataJson);
-            await categorieService.upsertProductsCategories(data.productId);
+            /**await categorieService.upsertProductsCategories(data.productId);**/
             logs.sync("Se actualizo el producto", {
               type: "success",
               process,
@@ -352,23 +346,12 @@ exports.runProducts = async () => {
         if (result) {
           try {
             await idempiereService.insertLogProduct(data);
-
-            logs.sync(data, {
-              type: "success",
-              process,
-            });
-
             logs.sync("Se cargo el log de productos en idempiere", {
               type: "success",
               process,
             });
           } catch (eee) {
-            logs.sync(eee, {
-              type: "error",
-              logs: eee.message,
-              process,
-            });
-            logs.sync("Error al cargar el log de productos en idempiere", {
+            logs.sync("Error al cargar el log de productos en idempiere: "+eee, {
               type: "error",
               logs: eee.message,
               process,
@@ -377,8 +360,7 @@ exports.runProducts = async () => {
         }
         /***  End Create Log ***/
       } catch (e) {
-        console.log(e);
-        logs.sync("Error al cargar registro de productos", {
+        logs.sync("Error al cargar registro de productos: ["+data.productValue+"] "+e, {
           type: "error",
           logs: e.message,
           process,
@@ -404,3 +386,39 @@ exports.runProducts = async () => {
     };
   }
 };
+
+exports.runProductCats = async () => {
+  try{
+    let result = false;
+    result = await categorieService.recordProductCat();
+    if(!result){
+      logs.sync("Error al insertar los registros de productos de acceso rapido", {
+        type: "error",
+        logs: err.message,
+        process,
+      });
+
+      return {
+        message: "Error al insertar los registros de productos de acceso rapido",
+        error: true,
+        logs: err.message,
+      };
+    }
+    return {
+      message: "Se insertaron los registros de productos de acceso rapido",
+      data: "Registros insertados",
+    };
+  }catch(e) {
+    logs.sync("Error al insertar los registros de productos de acceso rapido", {
+      type: "error",
+      logs: err.message,
+      process,
+    });
+
+    return {
+      message: "Error al insertar los registros de productos de acceso rapido",
+      error: true,
+      logs: err.message,
+    };
+  }
+}

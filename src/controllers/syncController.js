@@ -1,4 +1,5 @@
 const syncMaster = require("../services/idempiere/syncMastersService");
+const categorieService = require("../services/categoriesService");
 
 exports.syncTaxes = async (req, res) => {
   try {
