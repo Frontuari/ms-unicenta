@@ -40,29 +40,57 @@ exports.run = async () => {
         );
 
         let dataJSON = createOrderJSON(ticket, ticketlines, paymentServices);
-
+        console.log(dataJSON);
         const response = await axios.post(url, dataJSON, options);
-        if (response.data.errMsg.toUpperCase() == "OK") {
-          ticket.IsImported = "Y";
 
-          ticket
-            .save()
-            .then(() => {})
-            .catch(() => {
-              console.log("error al guardar");
+        if (response.data.errMsg) {
+          if (response.data.errMsg.toUpperCase() == "OK") {
+            ticket.IsImported = "Y";
+
+            ticket
+              .save()
+              .then(() => {})
+              .catch(() => {
+                console.log("error al guardar");
+              });
+
+            logs.sync(response.data, {
+              process: "venta sincronizada",
+              deactive_messages: true,
+              ticket_id: ticket.id,
             });
 
-          logs.sync(response.data, {
-            process: "venta sincronizada",
-            deactive_messages: true,
-            ticket_id: ticket.id,
-          });
+            logs.sync(` ticket ${ticket.ticketid} sincronizado...`, {
+              type: "success",
+              process: "sincronizar ventas",
+              ticket_id: ticket.id,
+            });
+          } else {
+            ticket.exist_error = "Y";
 
-          logs.sync(` ticket ${ticket.ticketid} sincronizado...`, {
-            type: "success",
-            process: "sincronizar ventas",
-            ticket_id: ticket.id,
-          });
+            ticket
+              .save()
+              .then(() => {})
+              .catch(() => {
+                console.log("### ERROR ###");
+              });
+
+            logs.sync(response.data.errMsg, {
+              type: "error",
+              process: "sincronizar ventas",
+              ticket_id: ticket.id,
+              logs: response.data,
+            });
+
+            logs.sync(
+              `Respuesta de Error desde idempiere.... ticket: ${ticket.ticketid}`,
+              {
+                type: "error",
+                process: "sincronizar ventas",
+                ticket_id: ticket.id,
+              }
+            );
+          }
         } else {
           ticket.exist_error = "Y";
 
