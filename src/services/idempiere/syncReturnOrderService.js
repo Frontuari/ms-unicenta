@@ -162,7 +162,7 @@ const createOrderJSON = (ticket, ticketlines, ticketOriginal) => {
     orderdocumentno: ticket.status, // ticket a devolver
     description: idempiereEnv.COMMENT_RETURN,
     dateTrx: date(ticket.receipts.datenew),
-    salesRep_ID: idempiereEnv.SALESREP_ID,
+    salesRep_ID: ticket.person,
     name: ticket.ticketid,
 
     c_bpartner_id: `${ticket.customers.taxid}`,

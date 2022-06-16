@@ -24,13 +24,12 @@ app.use("/api/", routes());
     await taskService.deactiveProcess(2);
 
     if (globalConfig.SYNC_IDEMPIERE) {
-      /*await orderService.uncheckAllOrdersExistError();
+      await orderService.uncheckAllOrdersExistError();
       await syncMasters.runPayments();
       await syncMasters.runTaxes();
       await syncMasters.runUoms();
       await syncMasters.runPeople();
-      await syncMasters.runLocations();*/
-      await syncMasters.runProducts();
+      await syncMasters.runLocations();
 
       await syncOrderServices.run();
       await syncReturnOrderService.run();
@@ -46,8 +45,8 @@ syncTask.executeTaskImportTypePayments();
 syncTask.executeTaskImportUoms();
 
 syncTask.executeTaskImportPeople();
-//syncTask.executeTaskSyncReturnOrders();
-//syncTask.executeTaskSyncOrders();
+syncTask.executeTaskSyncReturnOrders();
+syncTask.executeTaskSyncOrders();
 
 app.listen(globalConfig.port, () =>
   console.log("Server is up on port: ", globalConfig.port)
