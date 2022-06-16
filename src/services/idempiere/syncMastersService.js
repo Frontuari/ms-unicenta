@@ -275,7 +275,10 @@ exports.runProducts = async () => {
 
     if (products) {
       try {
-        await currencyratesService.upsertRate(products[0].currencyRate,products[0].validTo);
+        await currencyratesService.upsertRate(
+          products[0].currencyRate,
+          products[0].validTo
+        );
 
         logs.sync("Se cargo la tasa", {
           type: "success",
@@ -351,20 +354,29 @@ exports.runProducts = async () => {
               process,
             });
           } catch (eee) {
-            logs.sync("Error al cargar el log de productos en idempiere: "+eee, {
-              type: "error",
-              logs: eee.message,
-              process,
-            });
+            logs.sync(
+              "Error al cargar el log de productos en idempiere: " + eee,
+              {
+                type: "error",
+                logs: eee.message,
+                process,
+              }
+            );
           }
         }
         /***  End Create Log ***/
       } catch (e) {
-        logs.sync("Error al cargar registro de productos: ["+data.productValue+"] "+e, {
-          type: "error",
-          logs: e.message,
-          process,
-        });
+        logs.sync(
+          "Error al cargar registro de productos: [" +
+            data.productValue +
+            "] " +
+            e,
+          {
+            type: "error",
+            logs: e.message,
+            process,
+          }
+        );
       }
     });
 
@@ -388,18 +400,22 @@ exports.runProducts = async () => {
 };
 
 exports.runProductCats = async () => {
-  try{
+  try {
     let result = false;
     result = await categorieService.recordProductCat();
-    if(!result){
-      logs.sync("Error al insertar los registros de productos de acceso rapido", {
-        type: "error",
-        logs: err.message,
-        process,
-      });
+    if (!result) {
+      logs.sync(
+        "Error al insertar los registros de productos de acceso rapido",
+        {
+          type: "error",
+          logs: err.message,
+          process,
+        }
+      );
 
       return {
-        message: "Error al insertar los registros de productos de acceso rapido",
+        message:
+          "Error al insertar los registros de productos de acceso rapido",
         error: true,
         logs: err.message,
       };
@@ -408,7 +424,7 @@ exports.runProductCats = async () => {
       message: "Se insertaron los registros de productos de acceso rapido",
       data: "Registros insertados",
     };
-  }catch(e) {
+  } catch (e) {
     logs.sync("Error al insertar los registros de productos de acceso rapido", {
       type: "error",
       logs: err.message,
@@ -421,4 +437,4 @@ exports.runProductCats = async () => {
       logs: err.message,
     };
   }
-}
+};

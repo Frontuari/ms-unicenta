@@ -254,7 +254,7 @@ const createOrderJSON = (ticket, ticketlines, payments) => {
     C_DocTypeOrder_ID: 1000170,
     dateOrdered: date(ticket.receipts.datenew),
     dateAcct: date(ticket.receipts.datenew),
-    salesRep_ID: idempiereEnv.SALESREP_ID,
+    salesRep_ID: ticket.people,
     //c_PaymentTerm_ID: idempiereEnv.C_PAYMENTTERM_ID,
     //m_PriceList_ID: idempiereEnv.M_PRICELIST_ID,
     //c_Currency_ID: idempiereEnv.C_CURRENCY_ID,

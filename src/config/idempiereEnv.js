@@ -1,5 +1,6 @@
 const idempiereConfig = {
   API_URL: process.env.API_URL_IDEMPIERE || "",
+  CURRENCY_VE: process.env.CURRENCY_VE || 1000001,
   ORG_ID: process.env.ORG_ID || 1000001,
   COMMENT: process.env.COMMENT || "Venta realizada en unicenta",
   COMMENT_RETURN:
