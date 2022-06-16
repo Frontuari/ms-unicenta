@@ -10,6 +10,7 @@ const syncReturnOrderService = require("./services/idempiere/syncReturnOrderServ
 const syncMasters = require("./services/idempiere/syncMastersService");
 const orderService = require("./services/OrderService");
 const taskService = require("./services/taskService");
+const { sync } = require("./utils/logs");
 
 const app = express();
 
@@ -23,12 +24,13 @@ app.use("/api/", routes());
     await taskService.deactiveProcess(2);
 
     if (globalConfig.SYNC_IDEMPIERE) {
-      await orderService.uncheckAllOrdersExistError();
+      /*await orderService.uncheckAllOrdersExistError();
       await syncMasters.runPayments();
       await syncMasters.runTaxes();
       await syncMasters.runUoms();
       await syncMasters.runPeople();
-      await syncMasters.runLocations();
+      await syncMasters.runLocations();*/
+      await syncMasters.runProducts();
 
       await syncOrderServices.run();
       await syncReturnOrderService.run();
@@ -42,10 +44,10 @@ taskUnCheckAllOrder.executeTask();
 syncTask.executeTaskImportTaxes();
 syncTask.executeTaskImportTypePayments();
 syncTask.executeTaskImportUoms();
-syncTask.executeTaskSyncOrders();
 
 syncTask.executeTaskImportPeople();
-syncTask.executeTaskSyncReturnOrders();
+//syncTask.executeTaskSyncReturnOrders();
+//syncTask.executeTaskSyncOrders();
 
 app.listen(globalConfig.port, () =>
   console.log("Server is up on port: ", globalConfig.port)

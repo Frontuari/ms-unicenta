@@ -15,11 +15,6 @@ const idempiereConfig = {
   CBPGROUP: process.env.CBPGROUP || 1000041,
   TAXIDTYPE: process.env.TAXIDTYPE || 1000001,
   CLIENTID: process.env.CLIENTID || 1000000,
-
-  /*c_POSTenderType_ID = {
-    PAGO_MOVIL: process.env.PAGO_MOVIL || "1000005",
-    EFECTIVO: process.env.EFECTIVO || "1000006",
-  }*/
 };
 
 module.exports = idempiereConfig;

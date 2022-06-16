@@ -330,6 +330,7 @@ exports.runProducts = async () => {
           });
 
           data.orgId = idempiereEnv.ORG_ID;
+
           /**await categorieService.upsertProductsCategories(data.productId);**/
           countProducts++;
         } else {
@@ -341,6 +342,7 @@ exports.runProducts = async () => {
               process,
               logs: dataJson,
             });
+
             countProducts++;
           }
         }
@@ -366,11 +368,12 @@ exports.runProducts = async () => {
         }
         /***  End Create Log ***/
       } catch (e) {
+        console.log(e);
         logs.sync(
           "Error al cargar registro de productos: [" +
             data.productValue +
             "] " +
-            e,
+            e.message,
           {
             type: "error",
             logs: e.message,

@@ -26,5 +26,7 @@ module.exports = (sequelize, DataTypes) => {
     { timestamps: false, tableName: "currencyrates", freezeTableName: true }
   );
 
+  Currencyrates.removeAttribute("id");
+
   return Currencyrates;
 };
