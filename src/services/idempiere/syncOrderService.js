@@ -197,6 +197,7 @@ const definePayment = (receipt, payments) => {
         swiftCode: "39393939",
         routingNo: "39393993",
         voiceAuthCode: "0393",
+        referenceNo: payment.reference,
       });
     } catch (error) {
       console.log(error);
