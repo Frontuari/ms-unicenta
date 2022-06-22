@@ -241,6 +241,7 @@ const definePartnerLocation = (ticket) => {
       phone: customer.phone || "0",
       regionName: customer.region,
       address1: customer.address,
+      address2: customer.address2 || " ",
       isBillTo: true,
       isPayFrom: true,
       isRemitTo: true,
