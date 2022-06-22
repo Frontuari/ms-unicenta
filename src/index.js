@@ -10,7 +10,6 @@ const syncReturnOrderService = require("./services/idempiere/syncReturnOrderServ
 const syncMasters = require("./services/idempiere/syncMastersService");
 const orderService = require("./services/OrderService");
 const taskService = require("./services/taskService");
-const { sync } = require("./utils/logs");
 
 const app = express();
 
@@ -24,15 +23,15 @@ app.use("/api/", routes());
     await taskService.deactiveProcess(2);
 
     if (globalConfig.SYNC_IDEMPIERE) {
-      /* await orderService.uncheckAllOrdersExistError();
+      await orderService.uncheckAllOrdersExistError();
       await syncMasters.runPayments();
       await syncMasters.runTaxes();
       await syncMasters.runUoms();
       await syncMasters.runPeople();
-      await syncMasters.runLocations();*/
+      await syncMasters.runLocations();
 
       await syncOrderServices.run();
-      //await syncReturnOrderService.run();
+      await syncReturnOrderService.run();
     }
   } catch (error) {
     console.log(error);
