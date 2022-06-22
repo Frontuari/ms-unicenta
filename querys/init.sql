@@ -38,7 +38,7 @@ VALUES (
         'idempiere'
     ),
     (
-        'bankTransfer',
+        'Transferencia Bancaria',
         '1000001',
         'Transferencia Bancaria',
         'A',
@@ -78,9 +78,9 @@ VALUES (
         'idempiere'
     ),
     (
-        'slip',
-        '1000006',
         'Zelle',
+        '1000006',
+        'ZELLE',
         'A',
         '1',
         'idempiere'
