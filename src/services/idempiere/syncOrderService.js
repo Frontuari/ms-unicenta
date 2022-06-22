@@ -236,7 +236,9 @@ const definePartnerLocation = (ticket) => {
     {
       c_Location_ID: 0,
       name: customer.city,
+      city: customer.city,
       phone: customer.phone || "0",
+      regionName: customer.region,
       isBillTo: true,
       isPayFrom: true,
       isRemitTo: true,
