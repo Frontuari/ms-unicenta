@@ -37,7 +37,10 @@ exports.run = async () => {
 
         const response = await idempiereService.getReturnOrder(dataJSON);
 
-        if (response.errorMsg.toUpperCase() == "OK") {
+        if (
+          response.errorMsg.toUpperCase() == "OK" ||
+          response.errorMsg.toUpperCase() == "CO"
+        ) {
           ticket.IsImported = "Y";
 
           ticket
