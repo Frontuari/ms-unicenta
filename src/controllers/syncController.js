@@ -52,7 +52,17 @@ exports.syncLocations = async (req, res) => {
 };
 
 exports.syncProducts = async (req, res) => {
-  syncMaster
+
+
+  try{
+
+    await syncMaster.runTaxes();
+    await syncMaster.runLocations();
+    await syncMaster.runPeople();
+    await syncMaster.runUoms();
+    await syncMaster.runPayments();
+
+    syncMaster
     .runProductGroups()
     .then(async (rsp) => {
       try {
@@ -65,4 +75,8 @@ exports.syncProducts = async (req, res) => {
     .catch((error) => {
       return res.status(404).json({ ok: false, error: error.message });
     });
+  }catch(error) {
+    log.sync(error.message, { type: "error" });
+  }
+  
 };
