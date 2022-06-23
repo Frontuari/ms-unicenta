@@ -148,9 +148,9 @@ exports.runPeople = async () => {
           name: data.name,
           role: data.role,
           visible: data.active == true ? 1 : 0,
-          apppasword:
+          /*apppasword:
             "sha1:" +
-            crypto.createHash("sha1").update(data.password).digest("hex"),
+            crypto.createHash("sha1").update(data.password).digest("hex"),*/
         });
 
         logs.sync("Se actualizo el usuario", {
