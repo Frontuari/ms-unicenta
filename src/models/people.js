@@ -15,6 +15,9 @@ module.exports = (sequelize, DataTypes) => {
       visible: {
         type: DataTypes.INTEGER,
       },
+      apppassword: {
+        type: DataTypes.STRING,
+      },
     },
     { timestamps: false, tableName: "people", freezeTableName: true }
   );

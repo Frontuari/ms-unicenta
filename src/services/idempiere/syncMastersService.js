@@ -10,6 +10,7 @@ const productsService = require("../productsService");
 const idempiereEnv = require("../../config/idempiereEnv");
 const categorieService = require("../categoriesService");
 const currencyratesService = require("../currencyratesService");
+const crypto = require("crypto");
 
 exports.runPayments = async () => {
   try {
@@ -147,6 +148,9 @@ exports.runPeople = async () => {
           name: data.name,
           role: data.role,
           visible: data.active == true ? 1 : 0,
+          apppasword:
+            "sha1:" +
+            crypto.createHash("sha1").update(data.password).digest("hex"),
         });
 
         logs.sync("Se actualizo el usuario", {
