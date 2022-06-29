@@ -321,6 +321,7 @@ exports.runProducts = async () => {
           plucode: data.plu,
           priceusdsale: data.priceUSDSale,
           stockunits: data.stockUnits,
+          memodate: data.syncDate,
         };
         let result = false;
         let cat = false;
