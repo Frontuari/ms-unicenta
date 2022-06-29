@@ -15,3 +15,11 @@ exports.create = async (data) => {
 exports.update = async (data) => {
   return await db.products.update(data, { where: { id: data.id } });
 };
+
+exports.createStock = async (data) => {
+  return await db.stockcurrent.create(data);
+};
+
+exports.updateStock = async (data) => {
+  return await db.stockcurrent.update(data, { where: { location: data.location, product: data.product } });
+};

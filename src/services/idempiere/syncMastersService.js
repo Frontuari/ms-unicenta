@@ -323,6 +323,12 @@ exports.runProducts = async () => {
           stockunits: data.stockUnits,
           memodate: data.syncDate,
         };
+        let dataStock = {
+          location: 0, //data.locationId,
+          product: data.productId,
+          attributesetinstance_id: null,
+          units: data.stockUnits,
+        };
         let result = false;
         let cat = false;
 
@@ -335,13 +341,14 @@ exports.runProducts = async () => {
           });
 
           data.orgId = idempiereEnv.ORG_ID;
-
-          /**await categorieService.upsertProductsCategories(data.productId);**/
+          //  Create Stock Products
+          await productsService.createStock(dataStock);
           countProducts++;
         } else {
           if (data.updateProduct) {
             result = await productsService.update(dataJson);
-            /**await categorieService.upsertProductsCategories(data.productId);**/
+          //  Update Stock Products
+          await productsService.updateStock(dataStock);
             logs.sync("Se actualizo el producto", {
               type: "success",
               process,
@@ -351,6 +358,12 @@ exports.runProducts = async () => {
             countProducts++;
           }
         }
+
+        logs.sync("Se actualizo el stock del producto", {
+            process,
+            logs: dataStock,
+            type: "success",
+          });
 
         /***  Create Log ***/
         if (result) {
