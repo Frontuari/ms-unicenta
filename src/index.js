@@ -28,6 +28,7 @@ app.use("/api/", routes());
       await syncMasters.runTaxes();
       await syncMasters.runUoms();
       await syncMasters.runPeople();
+      await syncMasters.runSalesRep();
       await syncMasters.runLocations();
 
       await syncOrderServices.run();
@@ -44,6 +45,7 @@ syncTask.executeTaskImportTypePayments();
 syncTask.executeTaskImportUoms();
 
 syncTask.executeTaskImportPeople();
+syncTask.executeTaskImportSalesRep();
 syncTask.executeTaskSyncReturnOrders();
 syncTask.executeTaskSyncOrders();
 

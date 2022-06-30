@@ -186,6 +186,53 @@ exports.runPeople = async () => {
   }
 };
 
+exports.runSalesRep = async () => {
+  try {
+    const salesreps = await idempiereService.getSalesRepByOrg(
+      idempiereEnv.ORG_ID
+    );
+    const process = "Actualizar Vendedores";
+    salesreps.forEach(async (data) => {
+      try {
+        await peopleService.upsertSalesRep({
+          id: data.id,
+          name: data.name,
+          dni: data.dni,
+        });
+
+        logs.sync("Se actualizo el vendedor", {
+          process,
+          type: "success",
+        });
+      } catch (e) {
+        console.log(e);
+        logs.sync("Error al cargar registro del vendedor", {
+          type: "error",
+          logs: e.message,
+          process,
+        });
+      }
+    });
+
+    return {
+      message: "Se actualizo el registro del vendedor",
+      data: salesreps,
+    };
+  } catch (err) {
+    logs.sync("Error al cargar los registros de los vendedores", {
+      type: "error",
+      logs: err.message,
+      process,
+    });
+
+    return {
+      message: "Error al cargar los registros de los vendedores",
+      error: true,
+      logs: err.message,
+    };
+  }
+};
+
 exports.runLocations = async () => {
   try {
     const locations = await idempiereService.getWarehousesByOrg(

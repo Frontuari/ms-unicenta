@@ -132,3 +132,17 @@ exports.executeTaskImportPeople = () => {
     }
   });
 };
+
+exports.executeTaskImportSalesRep = () => {
+  cron.schedule(periodicity.getPeriodicityMasters(), async () => {
+    logs.sync(
+      `Ejecucion de la tarea de sincronizacion de vendedores: ${new Date().toDateString()} `
+    );
+    try {
+      await syncMasters.runSalesRep();
+    } catch (error) {
+      console.log(error);
+      throw new Error(error.message);
+    }
+  });
+};

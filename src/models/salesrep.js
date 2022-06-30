@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
-  const Location = sequelize.define(
-    "locations",
+  const SalesRep = sequelize.define(
+    "salesrep",
     {
       id: {
         type: DataTypes.STRING,
@@ -9,12 +9,12 @@ module.exports = (sequelize, DataTypes) => {
       name: {
         type: DataTypes.STRING,
       },
-      address: {
+      dni: {
         type: DataTypes.STRING,
       },
     },
-    { timestamps: false, tableName: "locations", freezeTableName: true }
+    { timestamps: false, tableName: "salesrep", freezeTableName: true }
   );
 
-  return Location;
+  return SalesRep;
 };

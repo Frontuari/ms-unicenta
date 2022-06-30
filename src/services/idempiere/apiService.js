@@ -85,6 +85,18 @@ exports.getEmployeesByOrg = async (org_id) => {
   }
 };
 
+exports.getSalesRepByOrg = async (org_id) => {
+  try {
+    const url = `${idempiereConfig.API_URL}/salesrep/org/${org_id}`;
+    const response = await axios.get(url);
+
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error(error.message);
+  }
+};
+
 exports.getWarehousesByOrg = async (org_id) => {
   try {
     const url = `${idempiereConfig.API_URL}/warehouses/org/${org_id}`;

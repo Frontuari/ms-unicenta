@@ -41,6 +41,16 @@ exports.syncPeople = async (req, res) => {
   }
 };
 
+exports.syncSalesRep = async (req, res) => {
+  try {
+    const response = await syncMaster.runSalesRep();
+
+    return res.status(200).json({ ok: true, result: response });
+  } catch (error) {
+    return res.status(404).json({ ok: false, error: error.message });
+  }
+};
+
 exports.syncLocations = async (req, res) => {
   try {
     const response = await syncMaster.runLocations();
@@ -59,6 +69,7 @@ exports.syncProducts = async (req, res) => {
     await syncMaster.runTaxes();
     await syncMaster.runLocations();
     await syncMaster.runPeople();
+    await syncMaster.runSalesRep();
     await syncMaster.runUoms();
     await syncMaster.runPayments();
 
