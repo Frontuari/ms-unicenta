@@ -5,10 +5,14 @@ var colors = require("colors");
 exports.sync = (message, data) => {
   data = initData(data, message);
 
-  if (data.type != "info") {
-    saveLogInDB(data);
+  if (data.type == "error") {
+    if (
+      data.process == "sincronizar ventas" ||
+      data.process == "sincronizar devoluciones de ventas"
+    )
+      saveLogInDB(data);
   }
-  
+
   executeMessage(data, message);
 };
 
@@ -16,7 +20,7 @@ const executeMessage = (data, message) => {
   console.log("\n");
   if (data.type == "error") {
     logSync.error(message);
-    console.log((message+" Exception : "+data.logs).red);
+    console.log((message + " Exception : " + data.logs).red);
   } else if (data.type == "warn") {
     logSync.warn(message);
     console.log(message.yellow);
@@ -35,32 +39,31 @@ const initData = (data, message) => {
   if (!data) data = {};
   if (!data.process) data.process = message;
   if (!data.logs) data.logs = "";
-  if (!data.ticket) data.ticket = "";
+  if (!data.ticket_id) data.ticket_id = "";
   if (!data.type) data.type = "info";
   return data;
 };
 
 const saveLogInDB = (data) => {
-  /*db.logs
+  db.logs
     .create({
       process: data.process,
       status: data.type,
       logs: transformToText(data.logs),
-      ticket_id: data.ticket,
+      ticket_id: data.ticket_id,
     })
     .then(() => {})
     .catch((err) => {
       console.log("Error al cargar el registro en DB");
-      logSync.error("Error al cargar el registro en DB");
-      logSync.error("Error al cargar el registro en DB");
+
       logSync.error(err);
       logSync.error({
         process: data.process,
         status: data.type,
         logs: transformToText(data.logs),
-        ticket_id: data.ticket,
+        ticket_id: data.ticket_id,
       });
-    });*/
+    });
 };
 
 const transformToText = (logs) => {

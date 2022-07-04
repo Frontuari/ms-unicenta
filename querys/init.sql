@@ -11,6 +11,11 @@ ALTER TABLE customers
 ADD isimported varchar(1) DEFAULT 'N' NULL;
 ALTER TABLE categories
 ADD isimported varchar(1) DEFAULT 'N' NULL;
+
+
+ALTER TABLE tickets ADD counter decimal(10,0) DEFAULT 0;
+
+
 CREATE TABLE ms_pos_payments (
     id varchar(100) NULL,
     external_id varchar(100) NULL,

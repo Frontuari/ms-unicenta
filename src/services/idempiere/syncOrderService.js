@@ -55,7 +55,7 @@ exports.run = async () => {
               });
 
             logs.sync(response.data, {
-              process: "venta sincronizada",
+              process: "sincronizar ventas",
               deactive_messages: true,
               ticket_id: ticket.id,
             });
@@ -148,7 +148,6 @@ exports.run = async () => {
     return true;
   } catch (error) {
     console.log(error);
-    //execSync("sleep 5");
 
     logs.sync(error.message, {
       type: "error",
@@ -255,17 +254,11 @@ const createOrderJSON = (ticket, ticketlines, payments) => {
     orgId: idempiereEnv.ORG_ID,
     documentNo: ticket.ticketid,
     description: idempiereEnv.COMMENT,
-    //c_DocTypeTarget_ID: 1000170,
-    //C_DocTypeOrder_ID: 1000170,
+
     dateOrdered: date(ticket.receipts.datenew),
     dateAcct: date(ticket.receipts.datenew),
     salesRep_ID: ticket.person,
-    //c_PaymentTerm_ID: idempiereEnv.C_PAYMENTTERM_ID,
-    //m_PriceList_ID: idempiereEnv.M_PRICELIST_ID,
-    //c_Currency_ID: idempiereEnv.C_CURRENCY_ID,
-    //c_ConversionType_ID: idempiereEnv.C_CONVERSIONTYPE_ID,
-    //m_Warehouse_ID: idempiereEnv.M_WAREHOUSE_ID,
-    //paymentRule: idempiereEnv.PAYMENT_RULE,
+
     ftu_FiscalDocumentNo: ticket.fiscalprinterno,
     ftu_FiscalPrinterSerial: ticket.serialprinter,
     isTransferred: true,
