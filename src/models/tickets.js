@@ -37,6 +37,9 @@ module.exports = (sequelize, DataTypes) => {
       exist_error: {
         type: DataTypes.STRING,
       },
+      counter: {
+        type: DataTypes.DOUBLE,
+      },
     },
     { timestamps: false, freezeTableName: true }
   );

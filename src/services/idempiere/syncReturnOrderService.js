@@ -66,6 +66,7 @@ exports.run = async () => {
           );
         } else {
           ticket.exist_error = "Y";
+          ticket.counter = (ticket.counter ? ticket.counter : 0) + 1;
 
           ticket
             .save()
@@ -92,6 +93,7 @@ exports.run = async () => {
         }
       } catch (error) {
         ticket.exist_error = "Y";
+        ticket.counter = (ticket.counter ? ticket.counter : 0) + 1;
 
         ticket
           .save()
@@ -130,6 +132,8 @@ exports.run = async () => {
       ticket.set({
         exist_error: "Y",
       });
+
+      ticket.counter = (ticket.counter ? ticket.counter : 0) + 1;
 
       await ticket.save();
     } catch (e) {}
